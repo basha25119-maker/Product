@@ -8,6 +8,37 @@ Built with **Next.js 14 (App Router) + TypeScript + Prisma + MySQL (Aiven) + Tai
 
 ---
 
+## Quick start (TL;DR)
+
+```bash
+git clone https://github.com/basha25119-maker/Product.git
+cd Product
+npm install
+cp .env.example .env
+```
+
+Now open `.env` and fill in two values (see [§5](#5-set-up-your-aiven-mysql-database) and
+[§6](#6-configure-environment-variables) below for where to get them):
+
+```env
+DATABASE_URL="mysql://avnadmin:PASSWORD@your-service.aivencloud.com:PORT/defaultdb?ssl-mode=REQUIRED"
+AUTH_SECRET="<run: node -e "console.log(require('crypto').randomBytes(32).toString('base64'))">"
+```
+
+Then:
+
+```bash
+npx prisma migrate dev --name init
+npm run seed
+npm run dev
+```
+
+Open [http://localhost:3000/admin/login](http://localhost:3000/admin/login) and sign in with
+the `SEED_PLATFORM_ADMIN_EMAIL` / `SEED_PLATFORM_ADMIN_PASSWORD` from your `.env`. That's the
+whole loop — the numbered sections below explain each step in detail and cover deployment.
+
+---
+
 ## 1. What's included
 
 - **Platform Admin console** (`/admin`) — create customer accounts, suspend/reactivate,
@@ -176,8 +207,10 @@ npm run seed                  # re-run the seed script (idempotent)
 
 ### Option A — Vercel (recommended, easiest for Next.js)
 
-1. Push this project to a GitHub repository.
-2. Go to [vercel.com](https://vercel.com) → **New Project** → import the repo.
+1. This repo already lives at
+   [github.com/basha25119-maker/Product](https://github.com/basha25119-maker/Product) —
+   no need to push anywhere first.
+2. Go to [vercel.com](https://vercel.com) → **New Project** → import `basha25119-maker/Product`.
 3. In **Environment Variables**, add:
    - `DATABASE_URL` — your Aiven MySQL connection string
    - `AUTH_SECRET` — a long random value (use a different one than local dev)
