@@ -5,6 +5,7 @@ import { createWorkerAction, updateWorkerAction, type ActionState } from "@/acti
 import { Input, Label, FieldGroup, Select, Textarea } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { FormMessage } from "@/components/ui/FormMessage";
+import { usePanelClose } from "@/components/ui/PanelContext";
 
 type Branch = { id: string; name: string };
 type Worker = {
@@ -29,9 +30,10 @@ function SubmitButton({ label }: { label: string }) {
   );
 }
 
-export function WorkerForm({ branches, worker, onDone }: { branches: Branch[]; worker?: Worker; onDone?: () => void }) {
+export function WorkerForm({ branches, worker }: { branches: Branch[]; worker?: Worker }) {
   const action = worker ? updateWorkerAction.bind(null, worker.id) : createWorkerAction;
   const [state, formAction] = useFormState(action as (s: ActionState, f: FormData) => Promise<ActionState>, undefined);
+  const close = usePanelClose();
 
   return (
     <form action={formAction}>
@@ -89,8 +91,8 @@ export function WorkerForm({ branches, worker, onDone }: { branches: Branch[]; w
       <FormMessage error={state?.error} success={state?.success} />
       <div className="flex gap-2">
         <SubmitButton label={worker ? "Save Changes" : "Add Worker"} />
-        {onDone && (
-          <Button type="button" variant="outline" onClick={onDone}>
+        {close && (
+          <Button type="button" variant="outline" onClick={close}>
             Cancel
           </Button>
         )}

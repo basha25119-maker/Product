@@ -24,7 +24,9 @@ export default async function AdminCustomersPage() {
           <h1 className="text-2xl font-bold tracking-tight">Customers</h1>
           <p className="text-sm text-muted-foreground">Every business tenant on the platform.</p>
         </div>
-        <NewRecordPanel label="Create Customer">{() => <CreateCustomerForm />}</NewRecordPanel>
+        <NewRecordPanel label="Create Customer">
+          <CreateCustomerForm />
+        </NewRecordPanel>
       </div>
 
       <Table>

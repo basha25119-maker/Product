@@ -31,7 +31,9 @@ export default async function WorkersPage() {
           <h1 className="text-2xl font-bold tracking-tight">Workers</h1>
           <p className="text-sm text-muted-foreground">Your barbers and staff.</p>
         </div>
-        <NewRecordPanel label="Add Worker">{(close) => <WorkerForm branches={branches} onDone={close} />}</NewRecordPanel>
+        <NewRecordPanel label="Add Worker">
+          <WorkerForm branches={branches} />
+        </NewRecordPanel>
       </div>
 
       <Table>

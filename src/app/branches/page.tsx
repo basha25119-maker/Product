@@ -28,7 +28,9 @@ export default async function BranchesPage() {
           <h1 className="text-2xl font-bold tracking-tight">Branches</h1>
           <p className="text-sm text-muted-foreground">Manage your shop locations.</p>
         </div>
-        <NewRecordPanel label="Add Branch">{(close) => <BranchForm onDone={close} />}</NewRecordPanel>
+        <NewRecordPanel label="Add Branch">
+          <BranchForm />
+        </NewRecordPanel>
       </div>
 
       <Table>

@@ -5,6 +5,7 @@ import { createBranchAction, updateBranchAction, type ActionState } from "@/acti
 import { Input, Label, FieldGroup, Textarea } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { FormMessage } from "@/components/ui/FormMessage";
+import { usePanelClose } from "@/components/ui/PanelContext";
 
 function SubmitButton({ label }: { label: string }) {
   const { pending } = useFormStatus();
@@ -17,13 +18,12 @@ function SubmitButton({ label }: { label: string }) {
 
 export function BranchForm({
   branch,
-  onDone,
 }: {
   branch?: { id: string; name: string; address: string | null; phone: string | null; email: string | null; notes: string | null };
-  onDone?: () => void;
 }) {
   const action = branch ? updateBranchAction.bind(null, branch.id) : createBranchAction;
   const [state, formAction] = useFormState(action as (s: ActionState, f: FormData) => Promise<ActionState>, undefined);
+  const close = usePanelClose();
 
   return (
     <form action={formAction}>
@@ -56,8 +56,8 @@ export function BranchForm({
       <FormMessage error={state?.error} success={state?.success} />
       <div className="flex gap-2">
         <SubmitButton label={branch ? "Save Changes" : "Add Branch"} />
-        {onDone && (
-          <Button type="button" variant="outline" onClick={onDone}>
+        {close && (
+          <Button type="button" variant="outline" onClick={close}>
             Cancel
           </Button>
         )}

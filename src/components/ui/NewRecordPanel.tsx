@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Plus, X } from "lucide-react";
 import { Button } from "./Button";
 import { Card, CardHeader, CardTitle, CardContent } from "./Card";
+import { PanelContext } from "./PanelContext";
 
-export function NewRecordPanel({ label, children }: { label: string; children: (close: () => void) => React.ReactNode }) {
+export function NewRecordPanel({ label, children }: { label: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   if (!open) {
@@ -24,7 +25,9 @@ export function NewRecordPanel({ label, children }: { label: string; children: (
           <X size={16} />
         </button>
       </CardHeader>
-      <CardContent>{children(() => setOpen(false))}</CardContent>
+      <CardContent>
+        <PanelContext.Provider value={{ close: () => setOpen(false) }}>{children}</PanelContext.Provider>
+      </CardContent>
     </Card>
   );
 }
