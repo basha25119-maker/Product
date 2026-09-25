@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 240 20% 99%;
+  --foreground: 224 25% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 25% 12%;
+  --muted: 220 20% 96%;
+  --muted-foreground: 220 10% 45%;
+  --border: 220 15% 90%;
+  --primary: 222 47% 20%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 258 90% 66%;
+  --success: 152 60% 36%;
+  --danger: 0 72% 51%;
+  --warning: 38 92% 50%;
+  --radius: 12px;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+::selection {
+  background: hsl(var(--accent) / 0.25);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 999px;
+}
