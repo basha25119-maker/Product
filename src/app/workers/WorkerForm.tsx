@@ -76,8 +76,9 @@ export function WorkerForm({ branches, worker }: { branches: Branch[]; worker?: 
           </Select>
         </FieldGroup>
         <FieldGroup>
-          <Label htmlFor="defaultWageAmount">Default Wage Amount</Label>
+          <Label htmlFor="defaultWageAmount">Per-Day Pay Rate</Label>
           <Input id="defaultWageAmount" name="defaultWageAmount" type="number" step="0.01" defaultValue={worker?.defaultWageAmount ?? ""} />
+          <p className="mt-1 text-xs text-muted-foreground">Used to auto-calculate pay from attendance (Wages page).</p>
         </FieldGroup>
         <FieldGroup>
           <Label htmlFor="startDate">Start Date</Label>

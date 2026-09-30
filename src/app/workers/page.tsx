@@ -29,7 +29,7 @@ export default async function WorkersPage() {
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Workers</h1>
-          <p className="text-sm text-muted-foreground">Your barbers and staff.</p>
+          <p className="text-sm text-muted-foreground">Your workers and staff.</p>
         </div>
         <NewRecordPanel label="Add Worker">
           <WorkerForm branches={branches} />
@@ -79,7 +79,7 @@ export default async function WorkersPage() {
           ))}
         </Tbody>
       </Table>
-      {workers.length === 0 && <EmptyState title="No workers yet" description="Add your first barber to get started." />}
+      {workers.length === 0 && <EmptyState title="No workers yet" description="Add your first worker to get started." />}
     </DashboardShell>
   );
 }

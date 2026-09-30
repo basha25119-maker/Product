@@ -10,6 +10,13 @@ import { FormMessage } from "@/components/ui/FormMessage";
 type Branch = { id: string; name: string };
 type Worker = { id: string; firstName: string; lastName: string; branchId: string | null };
 type PaymentMethod = { id: string; name: string };
+type Prefill = {
+  workerId?: string;
+  branchId?: string;
+  amount?: string;
+  payPeriodStart?: string;
+  payPeriodEnd?: string;
+};
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -20,14 +27,29 @@ function SubmitButton() {
   );
 }
 
-export function WageForm({ branches, workers, paymentMethods }: { branches: Branch[]; workers: Worker[]; paymentMethods: PaymentMethod[] }) {
+export function WageForm({
+  branches,
+  workers,
+  paymentMethods,
+  prefill,
+}: {
+  branches: Branch[];
+  workers: Worker[];
+  paymentMethods: PaymentMethod[];
+  prefill?: Prefill;
+}) {
   const [state, formAction] = useFormState(createWageAction as (s: ActionState, f: FormData) => Promise<ActionState>, undefined);
-  const [branchId, setBranchId] = useState("");
+  const [branchId, setBranchId] = useState(prefill?.branchId ?? "");
   const filteredWorkers = branchId ? workers.filter((w) => !w.branchId || w.branchId === branchId) : workers;
   const today = new Date().toISOString().slice(0, 10);
 
   return (
     <form action={formAction}>
+      {prefill?.amount && (
+        <p className="mb-4 rounded-lg bg-accent/10 px-3 py-2 text-sm text-accent">
+          Amount and pay period pre-filled from this worker's attendance for the selected month — adjust if needed.
+        </p>
+      )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <FieldGroup>
           <Label htmlFor="branchId">Branch</Label>
@@ -42,7 +64,7 @@ export function WageForm({ branches, workers, paymentMethods }: { branches: Bran
         </FieldGroup>
         <FieldGroup>
           <Label htmlFor="workerId">Worker</Label>
-          <Select id="workerId" name="workerId" required>
+          <Select id="workerId" name="workerId" defaultValue={prefill?.workerId ?? ""} required>
             <option value="">Select worker</option>
             {filteredWorkers.map((w) => (
               <option key={w.id} value={w.id}>
@@ -57,7 +79,7 @@ export function WageForm({ branches, workers, paymentMethods }: { branches: Bran
         </FieldGroup>
         <FieldGroup>
           <Label htmlFor="amount">Amount</Label>
-          <Input id="amount" name="amount" type="number" step="0.01" min="0.01" required />
+          <Input id="amount" name="amount" type="number" step="0.01" min="0.01" defaultValue={prefill?.amount} required />
         </FieldGroup>
         <FieldGroup>
           <Label htmlFor="paymentMethodId">Payment Method</Label>
@@ -72,11 +94,11 @@ export function WageForm({ branches, workers, paymentMethods }: { branches: Bran
         </FieldGroup>
         <FieldGroup>
           <Label htmlFor="payPeriodStart">Pay Period Start</Label>
-          <Input id="payPeriodStart" name="payPeriodStart" type="date" />
+          <Input id="payPeriodStart" name="payPeriodStart" type="date" defaultValue={prefill?.payPeriodStart} />
         </FieldGroup>
         <FieldGroup>
           <Label htmlFor="payPeriodEnd">Pay Period End</Label>
-          <Input id="payPeriodEnd" name="payPeriodEnd" type="date" />
+          <Input id="payPeriodEnd" name="payPeriodEnd" type="date" defaultValue={prefill?.payPeriodEnd} />
         </FieldGroup>
       </div>
       <FieldGroup>

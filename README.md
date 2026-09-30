@@ -1,4 +1,4 @@
-# Barber Business Manager
+# Business Manager
 
 A multi-tenant SaaS web application for barber shop owners to manage branches,
 workers, sales, wages, rent, expenses, and profit & loss — with a separate
@@ -54,6 +54,13 @@ whole loop — the numbered sections below explain each step in detail and cover
   admin-created accounts.
 - **Financial engine** — revenue/wages/rent/expenses/profit calculations, 6-month P&L chart,
   sales by branch/worker, cash vs card breakdown, CSV report export.
+- **Sales entry, one row per worker per day** — cash, card/machine (and any custom payment
+  methods) are entered together and shown as columns with a total, instead of a separate
+  row per payment method.
+- **Attendance-based payroll** — mark each worker Full Day / Half Day / Absent per day on a
+  monthly grid; pay is calculated automatically from their per-day rate (half day = 50%,
+  absent = £0) over the month or any custom date range, then recorded as a wage payment.
+  See [`src/lib/attendance.ts`](src/lib/attendance.ts).
 - **Soft deletes + audit log** — sales/wages/rent/expenses are never hard-deleted; every
   important financial action is written to `audit_logs`.
 - **Premium UI** — a small custom design system (cards, tables, forms, charts via Recharts),

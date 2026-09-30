@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Barber Business Manager",
-  description: "Multi-tenant financial management for barber shop owners.",
+  title: "Business Manager",
+  description: "Multi-tenant financial management for business owners.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

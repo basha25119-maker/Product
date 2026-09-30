@@ -23,7 +23,7 @@ export function AdminShell({ adminEmail, children }: { adminEmail: string; child
           </div>
           <div>
             <p className="text-sm font-bold leading-tight">Platform Admin</p>
-            <p className="text-[11px] text-white/50">Barber Business Manager</p>
+            <p className="text-[11px] text-white/50">Business Manager</p>
           </div>
         </div>
         <nav className="flex-1 space-y-1 px-3 py-2">

@@ -6,7 +6,7 @@ import { BranchForm } from "../branches/BranchForm";
 import { WorkerForm } from "../workers/WorkerForm";
 import { AddPaymentMethodForm, AddCategoryForm } from "../settings/SmallForms";
 import { completeOnboardingAction } from "@/actions/onboarding";
-import { CheckCircle2, Scissors } from "lucide-react";
+import { CheckCircle2, Briefcase } from "lucide-react";
 
 export default async function OnboardingPage() {
   const session = await requireUserSession();
@@ -22,7 +22,7 @@ export default async function OnboardingPage() {
       <div className="mx-auto max-w-3xl">
         <div className="mb-8 flex flex-col items-center text-center">
           <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-            <Scissors size={22} />
+            <Briefcase size={22} />
           </div>
           <h1 className="text-2xl font-bold">Welcome to {tenant?.name}</h1>
           <p className="mt-1 text-sm text-muted-foreground">Let's get your workspace set up. You can skip steps and finish them later.</p>

@@ -131,7 +131,7 @@ export default async function DashboardPage({
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Sales by Barber</CardTitle>
+            <CardTitle>Sales by Worker</CardTitle>
           </CardHeader>
           <CardContent>
             {salesByWorker.length === 0 && <p className="text-sm text-muted-foreground">No sales yet.</p>}

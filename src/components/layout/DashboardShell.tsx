@@ -13,7 +13,7 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  Scissors,
+  Briefcase,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -45,7 +45,7 @@ export function DashboardShell({
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card md:flex">
         <div className="flex items-center gap-2 px-6 py-5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <Scissors size={18} />
+            <Briefcase size={18} />
           </div>
           <div>
             <p className="text-sm font-bold leading-tight">{businessName}</p>
@@ -90,7 +90,7 @@ export function DashboardShell({
       <div className="flex min-h-screen flex-1 flex-col">
         <header className="flex items-center justify-between border-b border-border bg-card/70 px-4 py-3 backdrop-blur md:hidden">
           <div className="flex items-center gap-2">
-            <Scissors size={18} />
+            <Briefcase size={18} />
             <span className="text-sm font-bold">{businessName}</span>
           </div>
           <form action="/api/auth/logout" method="post">

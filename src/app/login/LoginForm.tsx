@@ -22,7 +22,7 @@ export function LoginForm() {
     <form action={formAction}>
       <FieldGroup>
         <Label htmlFor="email">Email</Label>
-        <Input id="email" name="email" type="email" placeholder="you@yourbarbershop.com" required autoFocus />
+        <Input id="email" name="email" type="email" placeholder="you@yourbusiness.com" required autoFocus />
       </FieldGroup>
       <FieldGroup>
         <Label htmlFor="password">Password</Label>

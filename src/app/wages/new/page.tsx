@@ -4,7 +4,11 @@ import { DashboardShell } from "@/components/layout/DashboardShell";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import { WageForm } from "../WageForm";
 
-export default async function NewWagePage() {
+export default async function NewWagePage({
+  searchParams,
+}: {
+  searchParams: { workerId?: string; branchId?: string; amount?: string; payPeriodStart?: string; payPeriodEnd?: string };
+}) {
   const session = await requireUserSession();
   const [user, tenant, branches, workers, paymentMethods] = await Promise.all([
     prisma.user.findUnique({ where: { id: session.userId } }),
@@ -22,7 +26,18 @@ export default async function NewWagePage() {
           <CardTitle>New Wage Payment</CardTitle>
         </CardHeader>
         <CardContent>
-          <WageForm branches={branches} workers={workers} paymentMethods={paymentMethods} />
+          <WageForm
+            branches={branches}
+            workers={workers}
+            paymentMethods={paymentMethods}
+            prefill={{
+              workerId: searchParams.workerId,
+              branchId: searchParams.branchId,
+              amount: searchParams.amount,
+              payPeriodStart: searchParams.payPeriodStart,
+              payPeriodEnd: searchParams.payPeriodEnd,
+            }}
+          />
         </CardContent>
       </Card>
     </DashboardShell>

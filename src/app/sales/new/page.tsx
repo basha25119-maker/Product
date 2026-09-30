@@ -22,7 +22,7 @@ export default async function NewSalePage() {
           <CardTitle>New Sale</CardTitle>
         </CardHeader>
         <CardContent>
-          <SaleForm branches={branches} workers={workers} paymentMethods={paymentMethods} />
+          <SaleForm branches={branches} workers={workers} paymentMethods={paymentMethods} currency={tenant?.currency ?? "GBP"} />
         </CardContent>
       </Card>
     </DashboardShell>

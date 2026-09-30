@@ -1,21 +1,22 @@
 "use client";
 
 import { useFormState, useFormStatus } from "react-dom";
-import { useState } from "react";
-import { createSaleAction, updateSaleAction, type ActionState } from "@/actions/sales";
+import { useMemo, useState } from "react";
+import { createSaleEntryAction, type ActionState } from "@/actions/sales";
 import { Input, Label, FieldGroup, Select, Textarea } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
 import { FormMessage } from "@/components/ui/FormMessage";
+import { formatMoney } from "@/lib/utils";
 
 type Branch = { id: string; name: string };
 type Worker = { id: string; firstName: string; lastName: string; branchId: string | null };
 type PaymentMethod = { id: string; name: string };
 
-function SubmitButton({ label }: { label: string }) {
+function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? "Saving..." : label}
+      {pending ? "Saving..." : "Record Sale"}
     </Button>
   );
 }
@@ -24,29 +25,26 @@ export function SaleForm({
   branches,
   workers,
   paymentMethods,
-  sale,
+  currency = "GBP",
 }: {
   branches: Branch[];
   workers: Worker[];
   paymentMethods: PaymentMethod[];
-  sale?: {
-    id: string;
-    branchId: string;
-    workerId: string;
-    date: Date;
-    amount: string;
-    paymentMethodId: string;
-    reference: string | null;
-    notes: string | null;
-  };
+  currency?: string;
 }) {
-  const action = sale ? updateSaleAction.bind(null, sale.id) : createSaleAction;
-  const [state, formAction] = useFormState(action as (s: ActionState, f: FormData) => Promise<ActionState>, undefined);
-  const [branchId, setBranchId] = useState(sale?.branchId ?? "");
+  const [state, formAction] = useFormState(
+    createSaleEntryAction as (s: ActionState, f: FormData) => Promise<ActionState>,
+    undefined
+  );
+  const [branchId, setBranchId] = useState("");
+  const [amounts, setAmounts] = useState<Record<string, string>>({});
   const filteredWorkers = branchId ? workers.filter((w) => !w.branchId || w.branchId === branchId) : workers;
-
   const today = new Date().toISOString().slice(0, 10);
-  const dateDefault = sale ? new Date(sale.date).toISOString().slice(0, 10) : today;
+
+  const total = useMemo(
+    () => Object.values(amounts).reduce((sum, v) => sum + (parseFloat(v) || 0), 0),
+    [amounts]
+  );
 
   return (
     <form action={formAction}>
@@ -64,7 +62,7 @@ export function SaleForm({
         </FieldGroup>
         <FieldGroup>
           <Label htmlFor="workerId">Worker</Label>
-          <Select id="workerId" name="workerId" defaultValue={sale?.workerId ?? ""} required>
+          <Select id="workerId" name="workerId" required>
             <option value="">Select worker</option>
             {filteredWorkers.map((w) => (
               <option key={w.id} value={w.id}>
@@ -75,34 +73,53 @@ export function SaleForm({
         </FieldGroup>
         <FieldGroup>
           <Label htmlFor="date">Date</Label>
-          <Input id="date" name="date" type="date" defaultValue={dateDefault} required />
-        </FieldGroup>
-        <FieldGroup>
-          <Label htmlFor="amount">Amount</Label>
-          <Input id="amount" name="amount" type="number" step="0.01" min="0.01" defaultValue={sale?.amount} required />
-        </FieldGroup>
-        <FieldGroup>
-          <Label htmlFor="paymentMethodId">Payment Method</Label>
-          <Select id="paymentMethodId" name="paymentMethodId" defaultValue={sale?.paymentMethodId ?? ""} required>
-            <option value="">Select method</option>
-            {paymentMethods.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
-              </option>
-            ))}
-          </Select>
+          <Input id="date" name="date" type="date" defaultValue={today} required />
         </FieldGroup>
         <FieldGroup>
           <Label htmlFor="reference">Reference (optional)</Label>
-          <Input id="reference" name="reference" defaultValue={sale?.reference ?? ""} />
+          <Input id="reference" name="reference" />
         </FieldGroup>
       </div>
+
+      <FieldGroup>
+        <Label>Amount by Payment Method</Label>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {paymentMethods.map((p) => (
+            <div key={p.id}>
+              <label htmlFor={`amount_${p.id}`} className="mb-1 block text-xs font-medium text-muted-foreground">
+                {p.name}
+              </label>
+              <Input
+                id={`amount_${p.id}`}
+                name={`amount_${p.id}`}
+                type="number"
+                step="0.01"
+                min="0"
+                placeholder="0.00"
+                value={amounts[p.id] ?? ""}
+                onChange={(e) => setAmounts((prev) => ({ ...prev, [p.id]: e.target.value }))}
+              />
+            </div>
+          ))}
+        </div>
+        {paymentMethods.length === 0 && (
+          <p className="text-sm text-muted-foreground">
+            No active payment methods. Add one in Settings first.
+          </p>
+        )}
+      </FieldGroup>
+
+      <div className="mb-4 flex items-center justify-between rounded-lg bg-muted px-4 py-2.5 text-sm font-semibold">
+        <span>Total</span>
+        <span>{formatMoney(total, currency)}</span>
+      </div>
+
       <FieldGroup>
         <Label htmlFor="notes">Notes</Label>
-        <Textarea id="notes" name="notes" defaultValue={sale?.notes ?? ""} />
+        <Textarea id="notes" name="notes" />
       </FieldGroup>
       <FormMessage error={state?.error} success={state?.success} />
-      <SubmitButton label={sale ? "Save Changes" : "Record Sale"} />
+      <SubmitButton />
     </form>
   );
 }

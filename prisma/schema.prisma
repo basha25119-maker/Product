@@ -15,14 +15,14 @@ enum PlatformAdminRole {
 }
 
 model PlatformAdmin {
-  id           String   @id @default(cuid())
-  email        String   @unique
+  id           String            @id @default(cuid())
+  email        String            @unique
   passwordHash String
   name         String
   role         PlatformAdminRole @default(ADMIN)
-  status       AccountStatus @default(ACTIVE)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  status       AccountStatus     @default(ACTIVE)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
 
   @@map("platform_admins")
 }
@@ -50,47 +50,48 @@ enum SubscriptionStatus {
 // ============ TENANT ============
 
 model Tenant {
-  id        String   @id @default(cuid())
-  name      String
-  logoUrl   String?
-  status    AccountStatus @default(ACTIVE)
-  currency  String   @default("GBP")
-  timezone  String   @default("Europe/London")
-  address   String?
-  phone     String?
-  email     String?
+  id       String        @id @default(cuid())
+  name     String
+  logoUrl  String?
+  status   AccountStatus @default(ACTIVE)
+  currency String        @default("GBP")
+  timezone String        @default("Europe/London")
+  address  String?
+  phone    String?
+  email    String?
 
-  onboardingStep Int @default(0)
+  onboardingStep        Int       @default(0)
   onboardingCompletedAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  users            User[]
-  branches         Branch[]
-  workers          Worker[]
-  sales            Sale[]
-  paymentMethods   PaymentMethod[]
-  wagePayments     WagePayment[]
-  rentPayments     RentPayment[]
+  users             User[]
+  branches          Branch[]
+  workers           Worker[]
+  sales             Sale[]
+  paymentMethods    PaymentMethod[]
+  wagePayments      WagePayment[]
+  attendance        Attendance[]
+  rentPayments      RentPayment[]
   expenseCategories ExpenseCategory[]
-  expenses         Expense[]
-  subscription     Subscription?
-  auditLogs        AuditLog[]
+  expenses          Expense[]
+  subscription      Subscription?
+  auditLogs         AuditLog[]
 
   @@map("tenants")
 }
 
 model Subscription {
-  id        String   @id @default(cuid())
-  tenantId  String   @unique
-  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  plan      SubscriptionPlan @default(STARTER)
+  id        String             @id @default(cuid())
+  tenantId  String             @unique
+  tenant    Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  plan      SubscriptionPlan   @default(STARTER)
   status    SubscriptionStatus @default(TRIAL)
-  startDate DateTime @default(now())
+  startDate DateTime           @default(now())
   endDate   DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
 
   @@map("subscriptions")
 }
@@ -105,18 +106,18 @@ enum UserRole {
 }
 
 model User {
-  id           String   @id @default(cuid())
+  id           String        @id @default(cuid())
   tenantId     String
-  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  email        String   @unique
+  tenant       Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  email        String        @unique
   passwordHash String
   name         String
-  role         UserRole @default(OWNER)
+  role         UserRole      @default(OWNER)
   status       AccountStatus @default(ACTIVE)
 
-  mustResetPassword Boolean @default(false)
-  resetToken       String?  @unique
-  resetTokenExpiry DateTime?
+  mustResetPassword Boolean   @default(false)
+  resetToken        String?   @unique
+  resetTokenExpiry  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -133,25 +134,26 @@ enum BranchStatus {
 }
 
 model Branch {
-  id           String   @id @default(cuid())
-  tenantId     String
-  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  name         String
-  address      String?
-  phone        String?
-  email        String?
-  openingDate  DateTime?
-  status       BranchStatus @default(ACTIVE)
-  notes        String?  @db.Text
+  id          String       @id @default(cuid())
+  tenantId    String
+  tenant      Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name        String
+  address     String?
+  phone       String?
+  email       String?
+  openingDate DateTime?
+  status      BranchStatus @default(ACTIVE)
+  notes       String?      @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  workers  Worker[]
-  sales    Sale[]
+  workers      Worker[]
+  sales        Sale[]
   wagePayments WagePayment[]
+  attendance   Attendance[]
   rentPayments RentPayment[]
-  expenses Expense[]
+  expenses     Expense[]
 
   @@index([tenantId])
   @@map("branches")
@@ -174,28 +176,29 @@ enum WageType {
 }
 
 model Worker {
-  id                 String   @id @default(cuid())
-  tenantId           String
-  tenant             Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  branchId           String?
-  branch             Branch?  @relation(fields: [branchId], references: [id])
-  firstName          String
-  lastName           String
-  displayName        String?
-  phone              String?
-  email              String?
-  startDate          DateTime?
-  endDate            DateTime?
-  status             WorkerStatus @default(ACTIVE)
-  wageType           WageType @default(COMMISSION)
-  defaultWageAmount  Decimal? @db.Decimal(10, 2)
-  notes              String?  @db.Text
+  id                String       @id @default(cuid())
+  tenantId          String
+  tenant            Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  branchId          String?
+  branch            Branch?      @relation(fields: [branchId], references: [id])
+  firstName         String
+  lastName          String
+  displayName       String?
+  phone             String?
+  email             String?
+  startDate         DateTime?
+  endDate           DateTime?
+  status            WorkerStatus @default(ACTIVE)
+  wageType          WageType     @default(COMMISSION)
+  defaultWageAmount Decimal?     @db.Decimal(10, 2)
+  notes             String?      @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   sales        Sale[]
   wagePayments WagePayment[]
+  attendance   Attendance[]
 
   @@index([tenantId])
   @@index([branchId])
@@ -205,19 +208,19 @@ model Worker {
 // ============ PAYMENT METHODS ============
 
 model PaymentMethod {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   tenantId  String
-  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant    Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   name      String
-  isDefault Boolean  @default(false)
-  isActive  Boolean  @default(true)
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sales    Sale[]
+  sales        Sale[]
   wagePayments WagePayment[]
-  expenses Expense[]
+  expenses     Expense[]
 
   @@index([tenantId])
   @@map("payment_methods")
@@ -226,19 +229,19 @@ model PaymentMethod {
 // ============ SALES ============
 
 model Sale {
-  id              String   @id @default(cuid())
+  id              String        @id @default(cuid())
   tenantId        String
-  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant          Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   branchId        String
-  branch          Branch   @relation(fields: [branchId], references: [id])
+  branch          Branch        @relation(fields: [branchId], references: [id])
   workerId        String
-  worker          Worker   @relation(fields: [workerId], references: [id])
+  worker          Worker        @relation(fields: [workerId], references: [id])
   date            DateTime
-  amount          Decimal  @db.Decimal(10, 2)
+  amount          Decimal       @db.Decimal(10, 2)
   paymentMethodId String
   paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
   reference       String?
-  notes           String?  @db.Text
+  notes           String?       @db.Text
 
   deletedAt DateTime?
   deletedBy String?
@@ -256,20 +259,20 @@ model Sale {
 // ============ WAGES ============
 
 model WagePayment {
-  id              String   @id @default(cuid())
+  id              String         @id @default(cuid())
   tenantId        String
-  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant          Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   branchId        String
-  branch          Branch   @relation(fields: [branchId], references: [id])
+  branch          Branch         @relation(fields: [branchId], references: [id])
   workerId        String
-  worker          Worker   @relation(fields: [workerId], references: [id])
+  worker          Worker         @relation(fields: [workerId], references: [id])
   date            DateTime
-  amount          Decimal  @db.Decimal(10, 2)
+  amount          Decimal        @db.Decimal(10, 2)
   paymentMethodId String?
   paymentMethod   PaymentMethod? @relation(fields: [paymentMethodId], references: [id])
   payPeriodStart  DateTime?
   payPeriodEnd    DateTime?
-  notes           String?  @db.Text
+  notes           String?        @db.Text
 
   deletedAt DateTime?
   deletedBy String?
@@ -284,19 +287,48 @@ model WagePayment {
   @@map("wage_payments")
 }
 
+// ============ ATTENDANCE (drives automatic wage calculation) ============
+
+enum AttendanceStatus {
+  FULL_DAY
+  HALF_DAY
+  ABSENT
+}
+
+model Attendance {
+  id       String           @id @default(cuid())
+  tenantId String
+  tenant   Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  branchId String
+  branch   Branch           @relation(fields: [branchId], references: [id])
+  workerId String
+  worker   Worker           @relation(fields: [workerId], references: [id])
+  date     DateTime         @db.Date
+  status   AttendanceStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([workerId, date])
+  @@index([tenantId])
+  @@index([branchId])
+  @@index([date])
+  @@map("attendance")
+}
+
 // ============ RENT ============
 
 model RentPayment {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   tenantId    String
-  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   branchId    String
-  branch      Branch   @relation(fields: [branchId], references: [id])
+  branch      Branch    @relation(fields: [branchId], references: [id])
   date        DateTime
-  amount      Decimal  @db.Decimal(10, 2)
+  amount      Decimal   @db.Decimal(10, 2)
   periodStart DateTime?
   periodEnd   DateTime?
-  notes       String?  @db.Text
+  notes       String?   @db.Text
 
   deletedAt DateTime?
   deletedBy String?
@@ -313,10 +345,10 @@ model RentPayment {
 // ============ EXPENSES ============
 
 model ExpenseCategory {
-  id       String  @id @default(cuid())
-  tenantId String?
-  tenant   Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  name     String
+  id              String  @id @default(cuid())
+  tenantId        String?
+  tenant          Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name            String
   isGlobalDefault Boolean @default(false)
 
   createdAt DateTime @default(now())
@@ -329,19 +361,19 @@ model ExpenseCategory {
 }
 
 model Expense {
-  id              String   @id @default(cuid())
+  id              String          @id @default(cuid())
   tenantId        String
-  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant          Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   branchId        String
-  branch          Branch   @relation(fields: [branchId], references: [id])
+  branch          Branch          @relation(fields: [branchId], references: [id])
   date            DateTime
   categoryId      String
   category        ExpenseCategory @relation(fields: [categoryId], references: [id])
-  amount          Decimal  @db.Decimal(10, 2)
+  amount          Decimal         @db.Decimal(10, 2)
   paymentMethodId String?
-  paymentMethod   PaymentMethod? @relation(fields: [paymentMethodId], references: [id])
+  paymentMethod   PaymentMethod?  @relation(fields: [paymentMethodId], references: [id])
   description     String?
-  notes           String?  @db.Text
+  notes           String?         @db.Text
 
   deletedAt DateTime?
   deletedBy String?
