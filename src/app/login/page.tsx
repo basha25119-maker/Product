@@ -3,6 +3,8 @@ import { LoginForm } from "./LoginForm";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { SetvionBackground } from "@/components/brand/SetvionBackground";
+import { SetvionMark } from "@/components/brand/SetvionMark";
 
 const FEATURES = [
   { icon: BarChart3, text: "Real-time revenue, expenses and profit at a glance" },
@@ -18,13 +20,7 @@ export default async function LoginPage() {
     <div className="flex min-h-screen bg-background">
       {/* Brand panel */}
       <div className="relative hidden w-1/2 flex-col justify-between overflow-hidden bg-gradient-to-br from-[#0f1424] via-[#171d33] to-[#0f1424] p-12 text-white lg:flex">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-40"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 20%, rgba(124,58,237,0.35), transparent 40%), radial-gradient(circle at 80% 70%, rgba(124,58,237,0.25), transparent 45%)",
-          }}
-        />
+        <SetvionBackground dense />
         <div className="relative flex items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white">
             <Briefcase size={20} />
@@ -52,7 +48,10 @@ export default async function LoginPage() {
           </ul>
         </div>
 
-        <p className="relative text-xs text-white/30">&copy; {new Date().getFullYear()} Business Manager</p>
+        <div className="relative flex items-center justify-between">
+          <p className="text-xs text-white/30">&copy; {new Date().getFullYear()} Business Manager</p>
+          <SetvionMark />
+        </div>
       </div>
 
       {/* Form panel */}

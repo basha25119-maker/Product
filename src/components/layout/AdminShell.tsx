@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShieldCheck, Users2, Building, Settings, LogOut, LayoutDashboard } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SetvionBackground } from "@/components/brand/SetvionBackground";
+import { SetvionMark } from "@/components/brand/SetvionMark";
 
 const nav = [
   { href: "/admin", label: "Platform Dashboard", icon: LayoutDashboard },
@@ -16,8 +18,9 @@ export function AdminShell({ adminEmail, children }: { adminEmail: string; child
 
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-[#0f1424] text-white md:flex">
-        <div className="flex items-center gap-2 px-6 py-5">
+      <aside className="relative hidden w-64 shrink-0 flex-col overflow-hidden border-r border-border bg-[#0f1424] text-white md:flex">
+        <SetvionBackground />
+        <div className="relative flex items-center gap-2 px-6 py-5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-white">
             <ShieldCheck size={18} />
           </div>
@@ -26,7 +29,7 @@ export function AdminShell({ adminEmail, children }: { adminEmail: string; child
             <p className="text-[11px] text-white/50">Business Manager</p>
           </div>
         </div>
-        <nav className="flex-1 space-y-1 px-3 py-2">
+        <nav className="relative flex-1 space-y-1 px-3 py-2">
           {nav.map((item) => {
             const active = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
             const Icon = item.icon;
@@ -45,7 +48,7 @@ export function AdminShell({ adminEmail, children }: { adminEmail: string; child
             );
           })}
         </nav>
-        <div className="border-t border-white/10 px-3 py-3">
+        <div className="relative border-t border-white/10 px-3 py-3">
           <div className="mb-2 truncate px-3 text-xs text-white/40">{adminEmail}</div>
           <form action="/api/admin/auth/logout" method="post">
             <button
@@ -56,6 +59,9 @@ export function AdminShell({ adminEmail, children }: { adminEmail: string; child
               Sign out
             </button>
           </form>
+          <div className="mt-4 border-t border-white/10 pt-3">
+            <SetvionMark />
+          </div>
         </div>
       </aside>
       <main className="flex-1 px-4 py-6 md:px-8 md:py-8">{children}</main>

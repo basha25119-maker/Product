@@ -3,14 +3,17 @@ import { AdminLoginForm } from "./AdminLoginForm";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { SetvionBackground } from "@/components/brand/SetvionBackground";
+import { SetvionMark } from "@/components/brand/SetvionMark";
 
 export default async function AdminLoginPage() {
   const session = await getSession();
   if (session?.type === "admin") redirect("/admin");
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0b0e19] px-4">
-      <div className="w-full max-w-sm">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0b0e19] px-4">
+      <SetvionBackground dense />
+      <div className="relative w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
           <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white">
             <ShieldCheck size={22} />
@@ -26,6 +29,9 @@ export default async function AdminLoginPage() {
           <Link href="/login" className="font-semibold text-white hover:underline">
             Customer sign in
           </Link>
+        </div>
+        <div className="mt-8">
+          <SetvionMark size="md" />
         </div>
       </div>
     </div>
