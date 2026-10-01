@@ -200,13 +200,16 @@ npm run dev
 ### Useful scripts
 
 ```bash
-npm run dev             # start local dev server
-npm run build            # production build
+npm run dev             # start local dev server (Turbopack — fast first-page compiles)
+npm run dev:webpack      # same, but classic webpack dev compiler (fallback if Turbopack misbehaves)
+npm run build            # production build (always webpack, Turbopack doesn't affect this)
 npm run start             # run the production build locally
 npm run prisma:studio      # open Prisma Studio (visually browse your Aiven DB)
 npm run prisma:migrate       # create a new migration after editing schema.prisma
 npm run seed                  # re-run the seed script (idempotent)
 ```
+
+**Why pages feel slow to open the *first* time after `npm run dev`:** Next.js dev mode compiles each route on-demand, the first time you visit it — this is normal App Router behavior, not something broken. On Windows especially, the webpack dev compiler can make that first compile take 20–30s per page; `npm run dev` now runs with Turbopack by default, which cuts that to 1–5s. Every page after the first visit is served from an in-memory cache and is fast regardless. If you still see slow first-compiles, check that your antivirus isn't real-time-scanning this project folder and `node_modules` (a very common Windows-specific slowdown).
 
 ---
 
