@@ -14,6 +14,9 @@ export default async function AdminLoginPage() {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0b0e19] px-4">
       <SetvionBackground dense />
       <div className="relative w-full max-w-sm">
+        <div className="mb-8 flex justify-center">
+          <SetvionMark tagline />
+        </div>
         <div className="mb-8 flex flex-col items-center text-center">
           <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white">
             <ShieldCheck size={22} />
@@ -29,9 +32,6 @@ export default async function AdminLoginPage() {
           <Link href="/login" className="font-semibold text-white hover:underline">
             Customer sign in
           </Link>
-        </div>
-        <div className="mt-8">
-          <SetvionMark size="md" />
         </div>
       </div>
     </div>

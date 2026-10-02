@@ -20,6 +20,9 @@ export function AdminShell({ adminEmail, children }: { adminEmail: string; child
     <div className="flex min-h-screen bg-background">
       <aside className="relative hidden w-64 shrink-0 flex-col overflow-hidden border-r border-border bg-[#0f1424] text-white md:flex">
         <SetvionBackground />
+        <div className="relative px-4 pt-5">
+          <SetvionMark size="sm" className="w-full" />
+        </div>
         <div className="relative flex items-center gap-2 px-6 py-5">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent text-white">
             <ShieldCheck size={18} />
@@ -59,9 +62,6 @@ export function AdminShell({ adminEmail, children }: { adminEmail: string; child
               Sign out
             </button>
           </form>
-          <div className="mt-4 border-t border-white/10 pt-3">
-            <SetvionMark />
-          </div>
         </div>
       </aside>
       <main className="flex-1 px-4 py-6 md:px-8 md:py-8">{children}</main>

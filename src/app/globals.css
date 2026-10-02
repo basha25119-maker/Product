@@ -120,9 +120,20 @@ body {
   100% { background-position: 200% center; }
 }
 
+.setvion-glow {
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.22), inset 0 0 12px rgba(245, 212, 133, 0.08);
+  animation: setvion-glow 4s ease-in-out infinite;
+}
+
+@keyframes setvion-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.18), inset 0 0 10px rgba(245, 212, 133, 0.06); }
+  50% { box-shadow: 0 0 36px rgba(212, 175, 55, 0.4), inset 0 0 16px rgba(245, 212, 133, 0.14); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .setvion-blob,
-  .setvion-shimmer {
+  .setvion-shimmer,
+  .setvion-glow {
     animation: none;
   }
 }

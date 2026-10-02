@@ -21,11 +21,14 @@ export default async function LoginPage() {
       {/* Brand panel */}
       <div className="relative hidden w-1/2 flex-col justify-between overflow-hidden bg-gradient-to-br from-[#0f1424] via-[#171d33] to-[#0f1424] p-12 text-white lg:flex">
         <SetvionBackground dense />
-        <div className="relative flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white">
-            <Briefcase size={20} />
+        <div className="relative flex flex-col items-start gap-6">
+          <SetvionMark tagline />
+          <div className="flex items-center gap-2">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-white">
+              <Briefcase size={20} />
+            </div>
+            <span className="text-lg font-bold">Business Manager</span>
           </div>
-          <span className="text-lg font-bold">Business Manager</span>
         </div>
 
         <div className="relative">
@@ -48,16 +51,16 @@ export default async function LoginPage() {
           </ul>
         </div>
 
-        <div className="relative flex items-center justify-between">
-          <p className="text-xs text-white/30">&copy; {new Date().getFullYear()} Business Manager</p>
-          <SetvionMark />
-        </div>
+        <p className="relative text-xs text-white/30">&copy; {new Date().getFullYear()} Business Manager</p>
       </div>
 
       {/* Form panel */}
       <div className="flex w-full flex-col items-center justify-center px-4 py-12 lg:w-1/2">
         <div className="w-full max-w-sm">
           <div className="mb-8 flex flex-col items-center text-center lg:hidden">
+            <div className="mb-6 rounded-2xl bg-[#0f1424] p-1">
+              <SetvionMark size="sm" />
+            </div>
             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-premium-lg">
               <Briefcase size={22} />
             </div>
