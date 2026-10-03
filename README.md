@@ -207,7 +207,15 @@ npm run start             # run the production build locally
 npm run prisma:studio      # open Prisma Studio (visually browse your Aiven DB)
 npm run prisma:migrate       # create a new migration after editing schema.prisma
 npm run seed                  # re-run the seed script (idempotent)
+npm run icons                  # regenerate favicon / home-screen icons from public/setvion-bridge.png
 ```
+
+**App icon and "Add to Home Screen".** The browser-tab favicon, the iPhone home-screen icon
+(`apple-touch-icon.png`) and the Android/PWA icons are generated from `public/setvion-bridge.png`
+onto a dark background. After changing the logo, run `npm run icons` and commit the updated files
+in `public/`. The home-screen label is set in `src/app/layout.tsx` (`appleWebApp.title`) and
+`src/app/manifest.ts` (`short_name`); iOS truncates long labels, so it is kept short. iOS caches
+home-screen icons, so to see a new one, remove the app from the home screen and add it again.
 
 **Why pages feel slow to open the *first* time after `npm run dev`:** Next.js dev mode compiles each route on-demand, the first time you visit it — this is normal App Router behavior, not something broken. On Windows especially, the webpack dev compiler can make that first compile take 20–30s per page; `npm run dev` now runs with Turbopack by default, which cuts that to 1–5s. Every page after the first visit is served from an in-memory cache and is fast regardless. If you still see slow first-compiles, check that your antivirus isn't real-time-scanning this project folder and `node_modules` (a very common Windows-specific slowdown).
 
