@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
 import { clearSessionCookie } from "@/lib/auth";
+import { relativeRedirect } from "@/lib/redirect";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   await clearSessionCookie();
-  return NextResponse.redirect(new URL("/admin/login", req.url));
+  return relativeRedirect("/admin/login", 303);
 }

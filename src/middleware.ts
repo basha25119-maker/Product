@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
+import { middlewareRedirect } from "@/lib/redirect";
 
 const SESSION_COOKIE = "bbm_session";
 
@@ -33,11 +34,11 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith("/onboarding");
 
   if (isAdminRoute && session?.type !== "admin") {
-    return NextResponse.redirect(new URL("/admin/login", req.url));
+    return middlewareRedirect(req, "/admin/login");
   }
 
   if (isDashboardRoute && session?.type !== "user") {
-    return NextResponse.redirect(new URL("/login", req.url));
+    return middlewareRedirect(req, "/login");
   }
 
   return NextResponse.next();

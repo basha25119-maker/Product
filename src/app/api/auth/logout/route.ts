@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
 import { clearSessionCookie, getSession } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
+import { relativeRedirect } from "@/lib/redirect";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   const session = await getSession();
   if (session?.type === "user") {
     await writeAuditLog({
@@ -15,5 +15,5 @@ export async function POST(req: NextRequest) {
     });
   }
   await clearSessionCookie();
-  return NextResponse.redirect(new URL("/login", req.url));
+  return relativeRedirect("/login", 303);
 }
